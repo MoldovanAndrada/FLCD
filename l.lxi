@@ -1,0 +1,158 @@
+%{
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+typedef struct{
+    int id;
+    }PIF;
+
+typedef struct{
+    char nume[10];
+}TSiden;
+
+int pifLength=0;
+int constLength = 0;
+int identifLength = 0;
+int identifCode = 0;
+int constCode = 1;
+PIF program[300];
+
+TSiden TSidentif[30];
+
+float TSconstante[30];
+
+
+void addPif( int id){
+    program[pifLength].id = id;
+    pifLength++;
+}
+
+void addConst(float atom){
+    int gasit = 0 ;
+    int i;
+    for(i = 0;i<constLength;i++){
+        if (TSconstante[i] == atom){
+            gasit =1;
+            addPif(i);
+        }
+    }
+    if (gasit == 0){
+        TSconstante[constLength]=atom;
+        addPif(constLength);
+        constLength++;
+    }
+
+}
+
+void addIdentif(char* atom){
+    int gasit = 0 ;
+     int i= 0;
+
+    while(i<identifLength){
+        int rez = strcmp(TSidentif[i].nume,atom);
+        if(strcmp(TSidentif[i].nume,atom)==0){
+            gasit =1;
+            addPif(i);
+        }
+        i++;
+    }
+
+    if (gasit == 0){
+        strcpy(TSidentif[identifLength].nume,atom);
+        addPif(identifLength);
+        identifLength++;
+    }
+}
+
+void showPIF(){
+    printf("PIF\n");
+    int t;
+    for(t=0;t<pifLength;t++){
+          printf(" %d ",program[t].id);
+          printf("\n");
+    }
+}
+
+void showConst(){
+    printf("Constante\n");
+    int i;
+    for(i = 0 ;i<constLength;i++){
+        printf(" %f|%d", TSconstante[i] , i);
+        printf("\n");
+    }
+    printf("\n");
+}
+
+void showId(){
+    printf("Identificatori\n");
+    int i;
+    for(i = 0 ;i<identifLength;i++){
+        printf(" %s|%d", TSidentif[i].nume , i);
+        printf("\n");
+}
+    printf("\n");
+}
+
+void show(){
+    showConst();
+    showId();
+    showPIF();
+}
+
+%}
+
+%option noyywrap
+DIGIT 		[0-9]
+ID      [a-z][a-z0-9]*
+
+%%
+{DIGIT}+                                addConst(atoi( yytext ));
+{DIGIT}+"."{DIGIT}*                     addConst(atof( yytext ));
+
+\identificator                          addPif(1);
+\constanta                              addPif(2);
+var                               addPif(3);
+integer                                  addPif(4);
+begin                                    addPif(5);
+mod                                  addPif(6);
+for                                    addPif(7);
+read                                     addPif(8);
+if                                     addPif(9);
+end                                     addPif(10);
+write                                      addPif(12);
+real                                    addPif(13);
+array                                     addPif(14);
+of                                     addPif(15);
+\(                                     addPif(18);
+\)                              addPif(19);
+\+                                      addPif(20);
+\==                                     addPif(21);
+\<=                                      addPif(22);
+\<                                addPif(23);
+\:=                                    addPif(24);
+
+
+\OR                                    addPif(24);
+\AND                                    addPif(26);
+{ID}                                    addIdentif( yytext);
+
+[ \t\n]+             ;/* eat up whitespace */
+. {
+  if(yytext[0] != 13) {
+    printf("illegal token %s si %d !",yytext,yytext[0]);
+  }
+}
+%%
+main( argc, argv )
+int argc;
+char **argv;
+{
+    ++argv, --argc; /* skip over program name */
+    if ( argc > 0 )
+    	yyin = fopen( argv[0], "r" );
+    else
+     	yyin = stdin;
+    yylex();
+    show();
+}

@@ -1,0 +1,19 @@
+var
+i:integer;
+j:integer;
+k:integer;
+ok:integer;
+begin
+ok:=0;
+read(k);
+for(i=2;i<=k;i:=i+1)ok=1;
+for(j=2;j<k;j:=j+1) 
+if(i mod j==0) 
+ok=0;
+end
+end
+if(ok==1) 
+write(i);
+end
+end
+end
