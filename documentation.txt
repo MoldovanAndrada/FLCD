@@ -1,0 +1,13 @@
+<digit> ::= "0"|...|"9"
+<non_zero_digit> = "1"|...|"9"
+<letter> ::= "a"|...|"z"
+<seq_letters> ::= <letter>|<letter><seq_letters>
+<seq_digits> ::= <digit>|<digit><seq_digits>
+<mix> ::= <seq_letters>|<seq_digits><seq_letters>
+
+
+<states> ::= <mix>|<mix><states>
+<starting_state> ::= "q"<digit>
+<final_state> ::= "q"<digit>
+<alphabet> ::= <letter>" "|<letter><alphabet>
+<transition> ::= <mix>" "<mix>" "<letter>
