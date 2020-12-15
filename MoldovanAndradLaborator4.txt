@@ -1,0 +1,42 @@
+G=(N,Σ,P,S)
+N={P, BS, LB, DL, DL, DEC, ID, IDL, AD, TP, CMST, STL, ST, SST, AS EX, T, FC, IOS, STRST, FST, IFST, WST, STW, C, REL, N, NO, NOD, D, L, TP}
+Σ= {READ, WRITE, finally, break, VAR, +, ;, :, BEGIN, END, (, ), *, [, ], ., <, <=, =, <>, >=, <, <<=< >>=, %, 1..9, a..Z, ::=, BOOLEAN, CHAR, INTEGER, DOUBLE, BINARY, block}
+S:
+BS -> break ID 
+LB -> string
+P -> VAR DL ; CMST . 
+DL -> DL | DL ; DL
+DEC -> ID : TYPE
+ID -> letter{ID} | no{ID}
+IDL -> ID | ID , IDL "TYPE" = TYPE
+AD -> "ARRAY" [ number ] "of" TYPE
+TYPE -> BOOLEAN | CHAR | INTEGER | DOUBLE | BINARY
+CMST -> BEGIN STL END
+STL -> ST | ST ; STL
+ST -> SST | STRST
+SST -> AS | IOS
+AS -> ID ::= EX
+EX -> EX | T
+T -> T * F | F
+F -> ( E ) | ID
+IOS -> READ ( ID ) | WRITE ( ID )
+STRST -> CMST | IFST | WST
+FST -> ( [E] ) ; C ; [ E ] )
+IFST-> "IF" C "THEN" ST ["ELSE" ST]
+WST -> ""WHILE" C "SO" ST
+STW -> "DO" ST "WHILE" C
+C -> E REL E
+REL -> "<", "<="| "="| "<>"| ">="| '<'| "<<="| '<'| ">>="
+D-> '0'|'1'|...|'9'
+L-> 'A'|...|Z | a | ... |z|
+NOD-> '1' | ... | 9 |
+NO -> NO{DIGIT}
+
+DOCUMENTATION: 
+
+N: nonterminals
+Σ: terminal symbols
+P: productions
+S: P   (starting symbol - program)
+
+

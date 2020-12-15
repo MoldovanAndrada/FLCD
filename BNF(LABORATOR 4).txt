@@ -1,0 +1,34 @@
+program::= "VAR" <decllist> ";" <cmpdstmt> "."
+break statement ::= break <identifier> //ADDED BREAK
+label ::= string
+decllist::=declaration | declaration ";" decllist
+declaration ::= identifierlist ":" type
+identifier::= letter{identifier} | number{identifier}
+identifierlist::=identifier | identifier "," identifierlist "TYPE" ::= TYPE //MULTIPLE VARIABLES CAN NOW BE DEFINED IN ONE DEC
+ arraydecl ::= "ARRAY" "[" nr "]" "OF" type1
+TYPE::= "BOOLEAN" | "CHAR" | "INTEGER" | "DOUBLE" | "BINARY"
+ cmpdstmt ::= "BEGIN" stmtlist "END"
+ stmtlist ::= stmt | stmt ";" stmtlist
+ stmt ::= simplstmt | structstmt
+ simplstmt ::= assignstmt | iostmt
+ assignstmt ::= IDENTIFIER "::=" expression
+ expression ::= expression "+" term | term
+ term ::= term "*" factor | factor
+ factor ::= "(" expression ")" | IDENTIFIER
+ iostmt ::= "READ" (“IDENTIFIER”) | "WRITE" "(" IDENTIFIER ")"
+ structstmt ::= cmpdstmt | ifstmt | whilestmt 
+forstm ::= ‘(’ [<expression>] ‘;’ <condition> ‘;’ [<expression>] ‘)’ <block> //ADDED FOR
+STATEMENT DEFINITION
+
+ifstmt ::= "IF" condition "THEN" stmt ["ELSE" stmt]
+ whilestmt ::= "WHILE" condition "DO" <stmt>
+smthwhile ::= “DO” stmt “WHILE” condition // ADDED DOWHILE
+ condition ::= <expression> RELATION <expression>
+ RELATION ::= "<" | "<=" | "=" | "<>" | ">=" | ">" “<<=” “>>=” “%” 
+digit::= '0'|'1'|...|'9'
+nonzerodigit::= '1'|'2'|...|'9'
+no::=digit{no}
+nonzeronumber::=nonzerodigit{no}
+number::=nonzeronumber|'0'
+letter::='a' | 'b' | ... |'z'| 'A' | 'B' | ... |'Z'|
+TP::= "BOOLEAN" | "CHAR" | "INTEGER" | "DOUBLE" | "BINARY"
